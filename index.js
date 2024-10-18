@@ -4,7 +4,7 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
+const { Server } = require('socket.io');
 const authRoutes = require("./routes/authRoutes");
 const friendInvitationRoutes = require("./routes/friendInvitationRoutes");
 const groupChatRoutes = require("./routes/groupChatRoutes");
@@ -42,10 +42,10 @@ mongoose
     console.log("Database connection failed. Server not started.");
     console.error(err);
   });
-
-  
+  const io = new Server(server, {
+    transports: ['polling'] // Force the use of long polling
+  });
   app.get('/', (req, res) => {
-    res.send('Hello World!')
-  })
+    res.send('Hello from Express and Socket.IO');
+  });
   
- 
